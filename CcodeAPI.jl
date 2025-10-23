@@ -18,19 +18,30 @@ end
 const Ccode = Main.Ccode  # alias for convenience
 
 # ── Config ─────────────────────────────────────────────────────────────────────
-const _CFG = Ref{NamedTuple}()
+const _CFG = Base.RefValue{NamedTuple}()   # unassigned Ref
+
 
 "Initialize wrapper and build trellis"
-function init(; K::Int=3, g::NTuple{2,Int}=(0o5,0o7), tail::Bool=false, sigma::Real=0.3, R::Real=0.5)
-    trel = Ccode.build_rsc_trellis(g[1], g[2], K)
-    _CFG[] = (trel=trel, tail=tail, sigma=float(sigma), R=float(R))
+function init(; K::Integer=3,
+               g::NTuple{2,<:Integer}=(0o5, 0o7),
+               tail::Bool=false,
+               sigma::Real=0.3,
+               R::Real=0.5)
+
+    g1, g2 = Int.(g)                       # <-- coerce to Int
+    trel = Ccode.build_rsc_trellis(g1, g2, Int(K))
+    _CFG[] = (trel=trel, tail=tail, sigma=Float64(sigma), R=Float64(R))
     return trel
 end
 
+
 @inline function _cfg()
-    isnothing(_CFG[]) && init()
+    if !isassigned(_CFG)           # ← don’t read _CFG[] until it’s assigned
+        init()                     #   lazily create default cfg
+    end
     return _CFG[]
 end
+
 
 "Encode bits using internal Ccode"
 function encode(u::AbstractVector{<:Integer})

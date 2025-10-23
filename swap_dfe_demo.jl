@@ -1,6 +1,6 @@
 #!/usr/bin/env julia
 using Random, Printf
-using Ccode
+using Ccode, Statistics
 
 # --- Helpers ---
 sigma_from_ebn0_db(ebn0_db, R) = sqrt(1 / (2R * 10.0^(ebn0_db/10)))

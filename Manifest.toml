@@ -12,7 +12,7 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
 [[deps.Ccode]]
 deps = ["LinearAlgebra", "Printf", "Statistics"]
-path = "/home/gabiel/Documents/GitHub/Env/Ccode"
+path = "Ccode"
 uuid = "4d97342b-768b-4c38-9b69-8c87cbeeb23e"
 version = "0.1.0"
 
