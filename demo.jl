@@ -6,7 +6,13 @@ using Random, Printf, Statistics, Ccode
 
 # Load API as a namespaced alias to avoid symbol conflicts in Main
 include("CcodeAPI.jl")
-const API = CcodeAPI
+if !isdefined(@__MODULE__, :API)
+    API = CcodeAPI           # <- real alias to your API module
+else
+    @info "Reusing existing API = $(API)"
+end
+
+
 
 # ----- Helpers -----
 sigma_from_ebn0_db(ebn0_db, R) = sqrt(1 / (2R * 10.0^(ebn0_db/10)))
